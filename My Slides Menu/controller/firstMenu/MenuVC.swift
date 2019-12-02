@@ -10,7 +10,7 @@ import UIKit
 
 class MenuVC: UITableViewController {
     
-     fileprivate let cellID = "cellID"
+    fileprivate let cellID = "cellID"
     let menuItems = [
         MenuModel(icon: #imageLiteral(resourceName: "profile"), title: "Profile"),
         MenuModel(icon: #imageLiteral(resourceName: "lists"), title: "Lists"),
@@ -21,7 +21,7 @@ class MenuVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-//        setupGesture()
+        //        setupGesture()
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -41,12 +41,14 @@ class MenuVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =  tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! MenuCell
-    
+        
         let model = menuItems[indexPath.row]
         
         cell.model = model
         return cell
     }
+    
+     //MARK: -user methods
     
     func setupTableView()  {
         tableView.backgroundColor = .white
@@ -55,18 +57,4 @@ class MenuVC: UITableViewController {
     }
     
     
-    
-//    func setupGesture()  {
-//        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePaneed))
-//        pan.delegate = self
-//        view.addGestureRecognizer(pan)
-//    }
 }
-
-//extension HomeVC: UIGestureRecognizerDelegate {
-//
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return true
-//    }
-//
-//}

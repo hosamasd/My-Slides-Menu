@@ -19,8 +19,10 @@ class ChatMenuContainerVC: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-       
+        
     }
+    
+     //MARK: -user methods
     
     func setupViews()  {
         searchContainer.searchBar.delegate = chatroomsMenuController

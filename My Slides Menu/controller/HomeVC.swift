@@ -16,7 +16,7 @@ class HomeVC: UITableViewController {
     fileprivate let velocityOpenThreshold:CGFloat  = 500
     fileprivate var isMenuOpen:Bool = false
     lazy var menuVC: MenuVC = {
-    let v = MenuVC()
+        let v = MenuVC()
         v.view.frame = CGRect(x: -menuWidth, y: 0, width: menuWidth, height: view.frame.height)
         let mainWindow = UIApplication.shared.keyWindow
         mainWindow?.addSubview(v.view)
@@ -24,7 +24,7 @@ class HomeVC: UITableViewController {
         return v
     }()
     let darkShadowView:UIView = {
-       let v = UIView(backgroundColor: UIColor(white: 0, alpha: 0.8))
+        let v = UIView(backgroundColor: UIColor(white: 0, alpha: 0.8))
         v.isUserInteractionEnabled = false
         v.alpha = 0
         return v
@@ -36,7 +36,7 @@ class HomeVC: UITableViewController {
         // Do any additional setup after loading the view.
         setupTableView()
         setupNavigation()
-//        setupGesture()
+        //        setupGesture()
         setupDarkShadow()
     }
     
@@ -47,13 +47,14 @@ class HomeVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: cellID)
         cell.textLabel?.text = "Item: \(indexPath.row)"
-        //        cell.backgroundColor = .orange
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
+    
+     //MARK: -user methods
     
     func setupDarkShadow()  {
         let mainWindow = UIApplication.shared.keyWindow
@@ -65,7 +66,7 @@ class HomeVC: UITableViewController {
     func setupTableView()  {
         tableView.backgroundColor = .red
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
-//        tableView.tableFooterView = UIView()
+        //        tableView.tableFooterView = UIView()
     }
     
     func setupGesture()  {
@@ -83,7 +84,6 @@ class HomeVC: UITableViewController {
     func performAnimations(transform: CGAffineTransform)  {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             self.menuVC.view.transform = transform
-//            self.view.transform = transform
             self.navigationController?.view.transform = transform
             self.darkShadowView.transform = transform
             
@@ -91,37 +91,37 @@ class HomeVC: UITableViewController {
         }, completion: nil)
     }
     
-  @objc  func handlePaneed(gesture:UIPanGestureRecognizer)  {
+    @objc  func handlePaneed(gesture:UIPanGestureRecognizer)  {
         let translation = gesture.translation(in: view)
-   
-    if gesture.state == .changed {
-        var x = translation.x
         
-        if isMenuOpen {
-            x += menuWidth
+        if gesture.state == .changed {
+            var x = translation.x
+            
+            if isMenuOpen {
+                x += menuWidth
+            }
+            
+            x = min(menuWidth, x)
+            x = max(0, x)
+            
+            let transform = CGAffineTransform(translationX: x    , y:    0)
+            
+            menuVC.view.transform = transform
+            self.navigationController?.view.transform = transform
+            self.darkShadowView.transform = transform
+            
+            let alpha = x / menuWidth
+            self.darkShadowView.alpha = alpha
+            
+        }else if gesture.state == .ended {
+            handleEnded(gesture: gesture)
+            
         }
-        
-        x = min(menuWidth, x)
-        x = max(0, x)
-        
-        let transform = CGAffineTransform(translationX: x    , y:    0)
-        
-        menuVC.view.transform = transform
-        self.navigationController?.view.transform = transform
-        self.darkShadowView.transform = transform
-        
-        let alpha = x / menuWidth
-        self.darkShadowView.alpha = alpha
-        
-    }else if gesture.state == .ended {
-       handleEnded(gesture: gesture)
-       
-    }
     }
     
     func handleEnded(gesture:UIPanGestureRecognizer)  {
-     let translation = gesture.translation(in: view)
-     let velocity = gesture.velocity(in: view)
+        let translation = gesture.translation(in: view)
+        let velocity = gesture.velocity(in: view)
         
         if isMenuOpen {
             if abs(velocity.x) > velocityOpenThreshold {
@@ -136,12 +136,12 @@ class HomeVC: UITableViewController {
                 handleShow(); return
             }
             
-             translation.x < menuWidth / 2 ?  handleHide() :  handleShow()
+            translation.x < menuWidth / 2 ?  handleHide() :  handleShow()
         }
         
-    
-        
     }
+    
+    //TODO: -handle methods
     
     @objc func handleShow() {
         (UIApplication.shared.keyWindow?.rootViewController as? BaseSlidingVC)?.openMenu()

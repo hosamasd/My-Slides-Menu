@@ -10,11 +10,11 @@ import UIKit
 
 class BaseSlidingVC: UIViewController {
     
-     fileprivate let velocityThreshold: CGFloat = 500
+    fileprivate let velocityThreshold: CGFloat = 500
     fileprivate let menuWidth:CGFloat = 300
-     fileprivate var isMenuOpen:Bool = false
+    fileprivate var isMenuOpen:Bool = false
     var redViewTrailingConstraint: NSLayoutConstraint!
-     var redViewLeadingConstarint:NSLayoutConstraint!
+    var redViewLeadingConstarint:NSLayoutConstraint!
     
     let redView:UIView = {
         let v = UIView()
@@ -34,14 +34,14 @@ class BaseSlidingVC: UIViewController {
         return v
     }()
     
-//     var rightViewController: UIViewController = UINavigationController(rootViewController: HomeVC())
+    //     var rightViewController: UIViewController = UINavigationController(rootViewController: HomeVC())
     var rightViewController: UIViewController = UINavigationController(rootViewController: HomeFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-         setupGesture()
+        setupGesture()
         setupViewControllers()
         
         darkCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapped)))
@@ -50,6 +50,8 @@ class BaseSlidingVC: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return isMenuOpen ? .lightContent : .default
     }
+    
+     //MARK: -user methods
     
     func setupViews()  {
         view.backgroundColor = .white
@@ -76,22 +78,22 @@ class BaseSlidingVC: UIViewController {
     
     func setupGesture()  {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePaneed))
-//        pan.delegate = self
+        //        pan.delegate = self
         view.addGestureRecognizer(pan)
     }
     
     func setupViewControllers()  {
         let homeView = rightViewController.view!
         
-//        let menuVC = MenuVC()
-         let menuVC = ChatMenuContainerVC()
+        //        let menuVC = MenuVC()
+        let menuVC = ChatMenuContainerVC()
         let menuView = menuVC.view!
         
         homeView.translatesAutoresizingMaskIntoConstraints = false
         menuView.translatesAutoresizingMaskIntoConstraints = false
         
         redView.addSubview(homeView)
-         redView.addSubview(darkCoverView)
+        redView.addSubview(darkCoverView)
         blueView.addSubview(menuView)
         
         homeView.fillSuperview()
@@ -102,18 +104,7 @@ class BaseSlidingVC: UIViewController {
         addChild(menuVC)
     }
     
-  @objc  func handlePaneed(gesture:UIPanGestureRecognizer)  {
-        let transltaion = gesture.translation(in: view)
-    var x = transltaion.x
-    x = isMenuOpen ? x+menuWidth : x
-    x = min(menuWidth, x)
-    x = max(0, x)
-        redViewLeadingConstarint.constant = x
-    darkCoverView.alpha = x / menuWidth
-    if gesture.state == .ended {
-        handleEnded(gesture: gesture)
-    }
-    }
+   
     
     func handleEnded(gesture:UIPanGestureRecognizer)  {
         let translate = gesture.translation(in: view)
@@ -147,11 +138,11 @@ class BaseSlidingVC: UIViewController {
     
     func didSelectItemAtIndex(index:IndexPath)  {
         
-       
         
-//        performRightViewCleanUp()
+        
+                performRightViewCleanUp()
         closeMenu()
-
+        
         switch index.row {
         case 0:
             rightViewController = UINavigationController(rootViewController: HomeVC())
@@ -160,7 +151,7 @@ class BaseSlidingVC: UIViewController {
         case 2:
             rightViewController = BookmarkVC()
         default:
-
+            
             let tabBarController = UITabBarController()
             let momentsController = UIViewController()
             momentsController.navigationItem.title = "Moments"
@@ -203,8 +194,23 @@ class BaseSlidingVC: UIViewController {
         setNeedsStatusBarAppearanceUpdate() // for indicate system to any changes in status bar
     }
     
+        //TODO: -handle methods
     
     @objc func handleTapped()  {
         closeMenu()
     }
+    
+    @objc  func handlePaneed(gesture:UIPanGestureRecognizer)  {
+        let transltaion = gesture.translation(in: view)
+        var x = transltaion.x
+        x = isMenuOpen ? x+menuWidth : x
+        x = min(menuWidth, x)
+        x = max(0, x)
+        redViewLeadingConstarint.constant = x
+        darkCoverView.alpha = x / menuWidth
+        if gesture.state == .ended {
+            handleEnded(gesture: gesture)
+        }
+    }
+    
 }

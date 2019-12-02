@@ -46,24 +46,28 @@ class TweetCell: UICollectionViewCell {
         tv.text = "SOME SAMPLE TEXT"
         tv.backgroundColor = .clear
         tv.isUserInteractionEnabled = false
+        tv.sizeToFit()
         return tv
     }()
   
     let replyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "reply").withRenderingMode(.alwaysOriginal), for: .normal)
+         button.setTitle("25", for: .normal)
         return button
     }()
     
     let retweetButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "retweet").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setTitle("25", for: .normal)
         return button
     }()
     
     let likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "like").withRenderingMode(.alwaysOriginal), for: .normal)
+         button.setTitle("25", for: .normal)
         return button
     }()
     
@@ -94,7 +98,7 @@ class TweetCell: UICollectionViewCell {
        let ss =  hstack(replyButton,retweetButton,likeButton,directMessageButton, spacing: 0, distribution: .fillEqually)
         
        let xx =  stack(messageTextView,ss, spacing: 8)
-        hstack(first,xx, spacing: 8)
+        hstack(first,xx, spacing: 8).withMargins(.init(top: 0, left: 16, bottom: 0, right: 16))
         
 //        addSubViews(views: userImageView,messageTextView)
 ////        addSubview( seperatorView)

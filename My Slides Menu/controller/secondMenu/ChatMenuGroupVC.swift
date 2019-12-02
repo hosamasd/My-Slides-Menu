@@ -56,7 +56,7 @@ class ChatMenuGroupVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! MenuGroupCell
         
         let text = filteredArray[indexPath.section][indexPath.row]
-       
+        
         cell.texts = text
         
         return cell
@@ -85,18 +85,6 @@ extension ChatMenuGroupVC: UISearchBarDelegate{
             tableView.reloadData()
             return
         }
-        
-        //multi line for fetch
-        //        var results = [[String]]()
-        //
-        //        self.chatroomGroups.forEach { (group) in
-        //            let filtered = group.filter({ (name) -> Bool in
-        //                return name.lowercased().contains(searchText.lowercased())
-        //            })
-        //            results.append(filtered)
-        //        }
-        //        print(results)
-        //        filteredArray = results
         
         //single line for fetch
         filteredArray = chatroomGroups.map({ (group) -> [String] in
